@@ -26,12 +26,13 @@ public class ProductController {
         return mv;
     }
 
+
     @GetMapping("/addProduct")
     public String showSignUpForm(Product product) {
         return "admin/add-product";
     }
 
-    @PostMapping("/addproduct")
+    @PostMapping("/add-product")
     public String addProduct(@Valid Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "admin/add-product";
