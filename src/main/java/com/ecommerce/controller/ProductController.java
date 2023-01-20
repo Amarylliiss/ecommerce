@@ -2,6 +2,7 @@ package com.ecommerce.controller;
 
 import com.ecommerce.model.Product;
 import com.ecommerce.repository.ProductRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,15 +27,23 @@ public class ProductController {
         return mv;
     }
 
+    @RequestMapping("/product-list")
+    public ModelAndView getAllProductsAdmin() {
+        ModelAndView mv = new ModelAndView("admin/product-list");
+        mv.addObject("productsAdm", Repo.findAll());
+        return mv;
+    }
 
-    @GetMapping("/addProduct")
-    public String showSignUpForm(Product product) {
+
+    @GetMapping("/add-product")
+    public String showAddProductForm(Product product) {
         return "admin/add-product";
     }
 
     @PostMapping("/add-product")
-    public String addProduct(@Valid Product product, BindingResult result, Model model) {
+    public String addProduct(@Valid Product product, BindingResult result, HttpSession session) {
         if (result.hasErrors()) {
+            session.setAttribute("action", "Produkt nie zostal dodany");
             return "admin/add-product";
         }
 
@@ -43,10 +52,11 @@ public class ProductController {
     }
 
     @GetMapping("/admin/dashboard")
-    public String showUserList(Model model) {
+    public String showProductList(Model model) {
         model.addAttribute("products", Repo.findAll());
         return "admin/dashboard";
     }
+
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         Product product = Repo.findById(id)
@@ -55,9 +65,10 @@ public class ProductController {
         model.addAttribute("product", product);
         return "admin/update-product";
     }
+
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") int id, @Valid Product product,
-                             BindingResult result, Model model) {
+    public String updateProduct(@PathVariable("id") long id, @Valid Product product,
+                                BindingResult result, Model model) {
         if (result.hasErrors()) {
             product.setId(id);
             return "update-user";
@@ -68,7 +79,7 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
+    public String deleteProduct(@PathVariable("id") long id, Model model) {
         Product product = Repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         Repo.delete(product);

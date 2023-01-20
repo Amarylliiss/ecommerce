@@ -1,32 +1,45 @@
 package com.ecommerce.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
 public class Product {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "users_sequence"
-    )
-    private int id;
-    @Column(name = "Name")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Size(max = 45)
+    @NotNull(message="Name is cannot be empty")
+    @Column(name = "Name", nullable = false, length = 45)
     private String name;
-    @Column(name = "Price")
-    private int price;
-    @Column(name = "Weight")
-    private int weight;
-    @Column(name = "Category")
+
+    @NotNull
+    @Column(name = "Price", nullable = false)
+    private Integer price;
+
+    @NotNull
+    @Column(name = "Weight", nullable = false)
+    private Integer weight;
+
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "Category", nullable = false, length = 45)
     private String category;
-    @Column(name = "image")
+
+    @Size(max = 10000)
+    @NotNull
+    @Column(name = "image", nullable = false, length = 10000)
     private String image;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,19 +51,19 @@ public class Product {
         this.name = name;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
@@ -69,4 +82,5 @@ public class Product {
     public void setImage(String image) {
         this.image = image;
     }
+
 }

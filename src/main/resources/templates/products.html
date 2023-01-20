@@ -49,25 +49,25 @@
                         <li sec:authorize="hasRole('ROLE_ANONYMOUS')">
                             <a th:href="@{'/login'}">Sign in</a>
                         </li>
-                        <li>
+                        <li sec:authorize="hasRole('ROLE_ANONYMOUS')">
                             <a th:href="@{'/register'}">Sign up</a>
                         </li>
 
 
                         <li sec:authorize="hasAuthority('ADMIN')">
-                            <a href="shoping-cart.html">Admin's Panel</a>
+                            <a th:href="@{'/admin/dashboard'}">Admin's Panel</a>
                         </li>
 
 
                         <li sec:authorize="isAuthenticated()">
-                            <a th:href="@{/logout}">Log Out</a>
+                            <a th:href="@{'/logout'}">Log Out</a>
 
                         </li>
                         <li sec:authorize="isAuthenticated()">
-                            <a th:href="@{/cart}">Cart</a>
+                            <a th:href="@{'/cart'}">Cart</a>
                         </li>
                         <li >
-                            <a th:href="@{/products}">Catalog</a>
+                            <a th:href="@{'/products'}">Catalog</a>
                         </li>
 
 
@@ -91,11 +91,6 @@
             </nav>
         </div>
         </div>
-
-
-
-
-
 
 
         <!-- Modal Search -->

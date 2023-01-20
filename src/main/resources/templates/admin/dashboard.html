@@ -47,10 +47,10 @@
             </li>
 
             <li sec:authorize="hasAuthority('ADMIN')">
-              <a th:href="@{'/products-list'}">Products</a>
+              <a th:href="@{'/product-list'}">Products</a>
               <ul class="sub-menu">
                 <li><a th:href="@{'/add-product'}">Add</a></li>
-                <li><a th:href="@{'/update-product'}">Edit </a></li>
+                <li><a th:href="@{'/product-list'}">Edit </a></li>
               </ul>
             </li>
             <li sec:authorize="hasAuthority('ADMIN')">
@@ -69,20 +69,6 @@
       </nav>
     </div>
   </header>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

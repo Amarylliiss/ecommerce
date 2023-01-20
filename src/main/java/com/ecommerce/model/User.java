@@ -1,4 +1,6 @@
 package com.ecommerce.model;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Null;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -19,10 +21,6 @@ import java.util.Collections;
 public class User implements UserDetails  {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "users_sequence"
-    )
     private int id;
 
     @NotNull(message = "First Name cannot be empty")
@@ -55,6 +53,7 @@ public class User implements UserDetails  {
     private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
+//    @Column(nullable = true)
     private Role role;
 
     @Column(name = "locked")
