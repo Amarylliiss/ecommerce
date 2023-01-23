@@ -53,7 +53,6 @@ public class User implements UserDetails  {
     private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
-//    @Column(nullable = true)
     private Role role;
 
     @Column(name = "locked")

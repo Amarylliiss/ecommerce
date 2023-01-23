@@ -5,13 +5,12 @@ import com.ecommerce.repository.ProductRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -41,13 +40,14 @@ public class ProductController {
     }
 
     @PostMapping("/add-product")
-    public String addProduct(@Valid Product product, BindingResult result, HttpSession session) {
+    public String addProduct(@RequestParam MultipartFile file, @Valid Product product, BindingResult result, HttpSession session, Model model) {
+        model.addAttribute("file", file);
         if (result.hasErrors()) {
-            session.setAttribute("action", "Produkt nie zostal dodany");
+//            session.setAttribute("action", "Produkt nie zostal dodany");
             return "admin/add-product";
         }
 
-        Repo.save(product);
+        Repo.saveAndFlush(product);
         return "redirect:/admin/dashboard";
     }
 
@@ -78,6 +78,7 @@ public class ProductController {
         return "redirect:/admin/dashboard";
     }
 
+
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id, Model model) {
         Product product = Repo.findById(id)
@@ -85,4 +86,28 @@ public class ProductController {
         Repo.delete(product);
         return "redirect:/admin/dashboard";
     }
+
+
+
+//    @GetMapping("/page/{pageNo}")
+//    public String findPaginated(@PathVariable (value = "pageNo") int pageNo,
+//                                @RequestParam("sortField") String sortField,
+//                                @RequestParam("sortDir") String sortDir,
+//                                Model model) {
+//        int pageSize = 5;
+//
+//        Page<Product> page =productService.findPaginated(pageNo, pageSize, sortField, sortDir);
+//        List<Product> productList = page.getContent();
+//
+//        model.addAttribute("currentPage", pageNo);
+//        model.addAttribute("totalPages", page.getTotalPages());
+//        model.addAttribute("totalItems", page.getTotalElements());
+//
+//        model.addAttribute("sortField", sortField);
+//        model.addAttribute("sortDir", sortDir);
+//        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+//
+//        model.addAttribute("productsAdm", productList);
+//        return "index";
+//    }
 }

@@ -13,7 +13,7 @@ public class Product {
     private Long id;
 
     @Size(max = 45)
-    @NotNull(message="Name is cannot be empty")
+    @NotNull
     @Column(name = "Name", nullable = false, length = 45)
     private String name;
 
@@ -30,10 +30,9 @@ public class Product {
     @Column(name = "Category", nullable = false, length = 45)
     private String category;
 
-    @Size(max = 10000)
     @NotNull
-    @Column(name = "image", nullable = false, length = 10000)
-    private String image;
+    @Column(name = "image", nullable = false)
+    private byte[] image;
 
     public Long getId() {
         return id;
@@ -75,11 +74,11 @@ public class Product {
         this.category = category;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

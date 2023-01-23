@@ -90,7 +90,7 @@
       <div class="container">
         <div class="flex-w flex-tr">
           <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-            <form th:action="@{/add-product}" th:object="${product}" method="post">
+            <form th:action="@{/add-product}" th:object="${product}" method="post"  enctype="multipart/form-data">
               <h4 class="mtext-105 cl2 txt-center p-b-30">
                 Add Product
               </h4>
@@ -108,12 +108,10 @@
               </div>
               <div class="bor8 m-b-20 how-pos4-parent">
                 <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{category}" placeholder="Category">
-
               </div>
 
               <div class="bor8 m-b-20 how-pos4-parent">
-                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{image}" placeholder="Image">
-
+                <input type="file" name="file" th:field="*{image}">
               </div>
 
               <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
