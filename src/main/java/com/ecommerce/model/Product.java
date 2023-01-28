@@ -3,6 +3,9 @@ package com.ecommerce.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.apache.tomcat.util.codec.binary.Base64;
+
+import java.util.Arrays;
 
 @Entity
 @Table(name = "products")
@@ -30,9 +33,7 @@ public class Product {
     @Column(name = "Category", nullable = false, length = 45)
     private String category;
 
-    @NotNull
-    @Column(name = "image", nullable = false)
-    private byte[] image;
+
 
     public Long getId() {
         return id;
@@ -74,12 +75,12 @@ public class Product {
         this.category = category;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
+
+//    @Override
+//    public String toString() {
+//        return "Product [id=" + id + ", name=" + name + " price=" + price + ", weight=" + weight + ", category=" + category + ", image="
+//                + Arrays.toString(image) + "]";
+//    }
 
 }

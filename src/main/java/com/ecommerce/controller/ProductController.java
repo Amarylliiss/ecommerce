@@ -2,37 +2,39 @@ package com.ecommerce.controller;
 
 import com.ecommerce.model.Product;
 import com.ecommerce.repository.ProductRepository;
+import com.ecommerce.service.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+
 
 @Controller
 public class ProductController {
-
     @Autowired
     private ProductRepository Repo;
+    @Autowired
+    private ProductService productService;
 
-    @RequestMapping("/catalog")
-    public ModelAndView getAllProducts() {
-        ModelAndView mv = new ModelAndView("products");
-        mv.addObject("products", Repo.findAll());
-        return mv;
+
+    @RequestMapping(path = {"/catalog","/search"})
+        public String search(Model model, HttpSession session, String keyword) {
+        if (keyword != null) {
+            session.setAttribute("listProduct", productService.getByKeyword(keyword));
+        } else {
+            session.setAttribute("listProduct", productService.getAllProducts(keyword));
+
+        }
+        return "products";
     }
-
-    @RequestMapping("/product-list")
-    public ModelAndView getAllProductsAdmin() {
-        ModelAndView mv = new ModelAndView("admin/product-list");
-        mv.addObject("productsAdm", Repo.findAll());
-        return mv;
-    }
-
 
     @GetMapping("/add-product")
     public String showAddProductForm(Product product) {
@@ -40,27 +42,21 @@ public class ProductController {
     }
 
     @PostMapping("/add-product")
-    public String addProduct(@RequestParam MultipartFile file, @Valid Product product, BindingResult result, HttpSession session, Model model) {
-        model.addAttribute("file", file);
+    public String addProduct( @Valid Product product, BindingResult result, HttpSession session, Model model) {
+
         if (result.hasErrors()) {
-//            session.setAttribute("action", "Produkt nie zostal dodany");
+            session.setAttribute("action", "Produkt nie zostal dodany");
             return "admin/add-product";
         }
 
         Repo.saveAndFlush(product);
-        return "redirect:/admin/dashboard";
-    }
-
-    @GetMapping("/admin/dashboard")
-    public String showProductList(Model model) {
-        model.addAttribute("products", Repo.findAll());
-        return "admin/dashboard";
+        return "redirect:/product-list";
     }
 
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
-        Product product = Repo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        Product product = Repo.findById(id);
+
 
         model.addAttribute("product", product);
         return "admin/update-product";
@@ -71,43 +67,37 @@ public class ProductController {
                                 BindingResult result, Model model) {
         if (result.hasErrors()) {
             product.setId(id);
-            return "update-user";
+            return "admin/update-product";
         }
 
         Repo.save(product);
-        return "redirect:/admin/dashboard";
+        return "redirect:/product-list";
     }
-
 
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id, Model model) {
-        Product product = Repo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        Product product = Repo.findById(id);
+
         Repo.delete(product);
-        return "redirect:/admin/dashboard";
+        return "redirect:/product-list";
     }
 
+    @GetMapping("/product-list")
+    public String productsPage(HttpServletRequest request, Model model, @Param("keyword") String keyword) {
 
+        int page = 0;
+        int size = 10;
+        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+            page = Integer.parseInt(request.getParameter("page")) - 1;
+        }
 
-//    @GetMapping("/page/{pageNo}")
-//    public String findPaginated(@PathVariable (value = "pageNo") int pageNo,
-//                                @RequestParam("sortField") String sortField,
-//                                @RequestParam("sortDir") String sortDir,
-//                                Model model) {
-//        int pageSize = 5;
-//
-//        Page<Product> page =productService.findPaginated(pageNo, pageSize, sortField, sortDir);
-//        List<Product> productList = page.getContent();
-//
-//        model.addAttribute("currentPage", pageNo);
-//        model.addAttribute("totalPages", page.getTotalPages());
-//        model.addAttribute("totalItems", page.getTotalElements());
-//
-//        model.addAttribute("sortField", sortField);
-//        model.addAttribute("sortDir", sortDir);
-//        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-//
-//        model.addAttribute("productsAdm", productList);
-//        return "index";
-//    }
+        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+            size = Integer.parseInt(request.getParameter("size"));
+        }
+
+            model.addAttribute("productsAdm", Repo.findAll(PageRequest.of(page, size)));
+        return "admin/product-list";
+
+    }
 }
+

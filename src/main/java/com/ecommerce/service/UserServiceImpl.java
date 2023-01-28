@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         System.out.println("existingUserEmail.isPresent() - "+existingUserEmail.isPresent());
         return Arrays.asList(userExists, message);
     }
-
+//
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(

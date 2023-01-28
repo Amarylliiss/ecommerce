@@ -53,8 +53,8 @@ public class WebSecurityConfig {
                 http.authorizeRequests()
                 // URL matching for accessibility
                 .requestMatchers("/", "/login", "/register","/catalog").permitAll()
-                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                .requestMatchers("/account/**").hasAnyAuthority("USER")
+                .requestMatchers("/admin/** ", "/cart").hasAnyAuthority("ADMIN")
+                .requestMatchers("/cart").hasAnyAuthority("USER")
                 .anyRequest().authenticated()
                 .and()
                 // form login

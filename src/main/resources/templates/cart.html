@@ -33,8 +33,8 @@
             <nav class="limiter-menu-desktop container">
 
                 <!-- Logo desktop -->
-                <a href="#" class="logo">
-                    <img src="/images/icons/logo.png" alt="IMG-LOGO">
+                <a th:href="@{/}" class="logo">
+                    <img th:src="@{/images/icons/logo.png}" alt="IMG-LOGO">
                 </a>
 
                 <!-- Menu desktop -->
@@ -44,24 +44,26 @@
                             <a th:href="@{'/'}">Home</a>
 
                         </li>
+                        <li sec:authorize="hasRole('ROLE_ANONYMOUS')">
+                            <a th:href="@{'/login'}">Sign in</a>
+                        </li>
 
-                        <li sec:authorize="hasAuthority('ADMIN')">
-                            <a th:href="@{'/dashboard'}">Admin Dashboard</a>
+                        <li sec:authorize="hasRole('ROLE_ANONYMOUS')">
+                            <a th:href="@{'/register'}">Sign up</a>
                         </li>
 
                         <li sec:authorize="hasAuthority('ADMIN')">
-                            <a th:href="@{'/users-list'}">Users</a>
-                        </li>
-                        <li sec:authorize="hasAuthority('ADMIN')">
-                            <a th:href="@{'/products-list'}">Products</a>
+                            <a th:href="@{'/admin/dashboard'}">Admin's Panel</a>
                         </li>
 
-                        <li sec:authorize="hasAuthority('ADMIN')">
-                            <a th:href="@{'/dashboard'}">Panel Admina</a>
+                        <li sec:authorize="isAuthenticated()">
+                            <a th:href="@{'/cart'}">Cart</a>
                         </li>
-                        <li>
-                            <a th:href="@{'/'}">Home</a>
-
+                        <li >
+                            <a th:href="@{'/catalog'}">Catalog</a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <a th:href="@{/logout}">Log Out</a>
                         </li>
                     </ul>
                 </div>
@@ -82,63 +84,21 @@
                 </div>
             </nav>
         </div>
-
-        <!-- Content page -->
-        <section class="bg0 p-t-104 p-b-116">
-            <div class="container">
-                <div class="flex-w flex-tr">
-                    <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-                        <form
-                        th:action="@{/update/{id}(id=${product.id})}"
-                        th:object="${product}"
-                        method="post">
-                            <div class="bor8 m-b-20 how-pos4-parent">
-                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{name}" placeholder="Name">
-
-                            </div>
-                            <div class="bor8 m-b-20 how-pos4-parent">
-                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{price}" placeholder="Price">
-
-                            </div>
-                            <div class="bor8 m-b-20 how-pos4-parent">
-                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{weight}" placeholder="Weight">
-
-                            </div>
-                            <div class="bor8 m-b-20 how-pos4-parent">
-                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{category}" placeholder="Category">
-
-                            </div>
-
-                            <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
-                               Update  Product
-                            </button>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </section>
+    </div>
 
 
-        <!-- Footer -->
-        <footer class="bg3 p-t-75 p-b-32">
-            <div class="container">
-                <div class="p-t-40">
-                    <p class="stext-107 cl6 txt-center">
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </p>
-                </div>
-            </div>
-        </footer>
+                <form action="#" th:action="@{/cart}"  method="POST">
+                <table>
+                  <tbody>
+                  <td th:text="${session.product.name}"></td>
+                  <td><button type="submit">Dodaj</button></td>
+                  </tbody>
 
-        <!-- Back to top -->
-        <div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<i class="zmdi zmdi-chevron-up"></i>
-		</span>
-        </div>
+                </table>
+                </form>
+
+
+
 
         <!--===============================================================================================-->
         <script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>
@@ -181,6 +141,7 @@
         <script th:src="@{/js/map-custom.js}"></script>
         <!--===============================================================================================-->
         <script th:src="@{/js/main.js}"></script>
+
 
 </body>
 </html>
