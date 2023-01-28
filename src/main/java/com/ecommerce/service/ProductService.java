@@ -19,6 +19,9 @@ public class ProductService {
     public List<Product>  getByKeyword(String keyword){
         return  productRepository.findByKeyword(keyword);
     }
+    public List<Product>  getByCategory(String category){
+        return  productRepository.findByKeyword(category);
+    }
     public Product getProductById(long id){
         return productRepository.findById(id);
     }

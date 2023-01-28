@@ -36,6 +36,7 @@ public class ProductController {
         return "products";
     }
 
+
     @GetMapping("/add-product")
     public String showAddProductForm(Product product) {
         return "admin/add-product";

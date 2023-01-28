@@ -49,11 +49,11 @@
               <a th:href="@{'/dashboard'}">Admin Dashboard</a>
             </li>
 
-            <li sec:authorize="hasAuthority('ADMIN')">
-              <a th:href="@{'/users-list'}">Users</a>
+            <li sec:authorize="hasAuthority('ADMIN')" class="active-menu">
+              <a th:href="@{'/user-list'}">Users</a>
             </li>
             <li sec:authorize="hasAuthority('ADMIN')">
-              <a th:href="@{'/products-list'}">Products</a>
+              <a th:href="@{'/product-list'}">Products</a>
             </li>
 
             <li sec:authorize="hasAuthority('ADMIN')">
@@ -112,6 +112,12 @@
                 <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{password}" placeholder="Password">
 
               </div>
+
+              <select th:field="*{role}" required>
+                <option value="">Select</option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="USER">USER</option>
+              </select> <br/><br/>
 
               <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                 Update  Product

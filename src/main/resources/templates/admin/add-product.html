@@ -75,10 +75,10 @@
             </li>
 
             <li sec:authorize="hasAuthority('ADMIN')">
-              <a th:href="@{'/users-list'}">Users</a>
+              <a th:href="@{'/user-list'}">Users</a>
             </li>
-            <li sec:authorize="hasAuthority('ADMIN')">
-              <a th:href="@{'/products-list'}">Products</a>
+            <li sec:authorize="hasAuthority('ADMIN')" class="active-menu">
+              <a th:href="@{'/product-list'}">Products</a>
             </li>
 
             <li sec:authorize="hasAuthority('ADMIN')">

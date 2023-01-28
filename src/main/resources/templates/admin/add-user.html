@@ -74,11 +74,11 @@
               <a th:href="@{'/dashboard'}">Admin Dashboard</a>
             </li>
 
-            <li sec:authorize="hasAuthority('ADMIN')">
-              <a th:href="@{'/users-list'}">Users</a>
+            <li sec:authorize="hasAuthority('ADMIN')" class="active-menu">
+              <a th:href="@{'/user-list'}">Users</a>
             </li>
             <li sec:authorize="hasAuthority('ADMIN')">
-              <a th:href="@{'/products-list'}">Products</a>
+              <a th:href="@{'/product-list'}">Products</a>
             </li>
 
             <li sec:authorize="hasAuthority('ADMIN')">
@@ -118,31 +118,37 @@
       <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
         <form th:action="@{/add-user}" th:object="${user}" method="post"  enctype="multipart/form-data">
           <h4 class="mtext-105 cl2 txt-center p-b-30">
-            Add Product
+            Add User
           </h4>
           <div class="bor8 m-b-20 how-pos4-parent">
-            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{firstName}" placeholder="Name">
+            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{firstName}" placeholder="First Name">
 
           </div>
           <div class="bor8 m-b-20 how-pos4-parent">
-            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{lastName}" placeholder="Price">
+            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{lastName}" placeholder="Last Name">
 
           </div>
           <div class="bor8 m-b-20 how-pos4-parent">
-            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{email}" placeholder="Weight">
+            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{email}" placeholder="Email">
 
           </div>
           <div class="bor8 m-b-20 how-pos4-parent">
-            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{address}" placeholder="Category">
+            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{address}" placeholder="Address">
           </div>
           <div class="bor8 m-b-20 how-pos4-parent">
-            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{password}" placeholder="Category">
+            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" th:field="*{password}" placeholder="Password">
           </div>
+
+          <select th:field="*{role}" required>
+            <option value="">Select</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="USER">USER</option>
+          </select> <br/><br/>
 
           <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
             Add User
           </button>
-          <h2 th:if="${#fields.hasErrors('name')}" th:errors="name"> </h2>
+          <h2 th:if="${#fields.hasErrors('firstName')}" th:errors="firstName"> </h2>
 
         </form>
       </div>

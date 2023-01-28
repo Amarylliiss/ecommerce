@@ -42,8 +42,5 @@ public class CartController {
         model.addAttribute("cart",cart);
         return "cart";
     }
-//    @GetMapping("/cart")
-//    public String cart(){
-//        Listcart cartView=cartService.getAllCart();
-//    }
+
 }
