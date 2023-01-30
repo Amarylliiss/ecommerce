@@ -3,12 +3,9 @@ package com.ecommerce.controller;
 import com.ecommerce.model.Product;
 import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.service.ProductService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -83,22 +80,35 @@ public class ProductController {
         return "redirect:/product-list";
     }
 
-    @GetMapping("/product-list")
-    public String productsPage(HttpServletRequest request, Model model, @Param("keyword") String keyword) {
+//    @GetMapping("/product-list")
+//    public String productsPage(HttpServletRequest request, Model model, @Param("keyword") String keyword) {
+//
+//        int page = 0;
+//        int size = 10;
+//        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+//            page = Integer.parseInt(request.getParameter("page")) - 1;
+//        }
+//
+//        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+//            size = Integer.parseInt(request.getParameter("size"));
+//        }
+//
+//            model.addAttribute("productsAdm", Repo.findAll(PageRequest.of(page, size)));
+//        return "admin/product-list";
+//
+//    }
 
-        int page = 0;
-        int size = 10;
-        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
-            page = Integer.parseInt(request.getParameter("page")) - 1;
+    @RequestMapping(path = {"/product-list","/searchAdm"})
+    public String searchAdm(Model model, Product product, String keyword) {
+        if (keyword != null) {
+            List<Product> list = productService.getByKeyword(keyword);
+            model.addAttribute("productsAdm", list);
+        } else {
+            List<Product> list = productService.getAllProducts(keyword);
+            model.addAttribute("productsAdm", list);
+
         }
-
-        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
-            size = Integer.parseInt(request.getParameter("size"));
-        }
-
-            model.addAttribute("productsAdm", Repo.findAll(PageRequest.of(page, size)));
         return "admin/product-list";
-
     }
 }
 

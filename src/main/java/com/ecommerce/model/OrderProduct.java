@@ -3,46 +3,36 @@ package com.ecommerce.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-
 @Entity
 @Table(name = "order_products")
 public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
-    @NotNull
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "order_id", nullable = true)
     private Order order;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @Column(name = "productid", nullable = false)
+    private Long productid;
 
     @NotNull
     @Column(name = "quantity", nullable = false)
-    private Byte quantity;
+    private Integer quantity;
 
     @NotNull
-    @Column(name = "amount", nullable = false, precision = 8, scale = 2)
-    private BigDecimal amount;
+    @Column(name = "amount", nullable = false)
+    private Integer amount;
 
-    @Column(name = "created_at")
-    private Instant createdAt;
-
-    @Column(name = "updated_at")
-    private Instant updatedAt;
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -54,44 +44,28 @@ public class OrderProduct {
         this.order = order;
     }
 
-    public Product getProduct() {
-        return product;
+    public Long getProductid() {
+        return productid;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductid(Long productid) {
+        this.productid = productid;
     }
 
-    public Byte getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Byte quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public BigDecimal getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
 }

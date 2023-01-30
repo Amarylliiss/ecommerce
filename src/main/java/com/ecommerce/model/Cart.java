@@ -17,8 +17,8 @@ public class Cart {
     private Integer price;
 
     @NotNull
-    @Column(name = "product_id", nullable = false)
-    private Long productId;
+    @Column(name = "productid", nullable = false)
+    private Long productid;
 
     @Size(max = 45)
     @NotNull
@@ -45,12 +45,12 @@ public class Cart {
         this.price = price;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getProductid() {
+        return productid;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProductid(Long productid) {
+        this.productid = productid;
     }
 
     public String getName() {

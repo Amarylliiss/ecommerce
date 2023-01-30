@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-  <title>About</title>
+  <title>Kawiarnia</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
@@ -43,14 +43,10 @@
       background-color: #051417;
       color: white;
     }
-
-    #pagination {
-      flex-direction: row;
-    }
   </style>
 </head>
+<body class="animsition">
 
-<body>
 <!-- Header -->
 <header class="header-v4">
   <!-- Header desktop -->
@@ -63,29 +59,36 @@
 
         <!-- Logo desktop -->
         <a href="#" class="logo">
-          <img src="images/icons/logo.png" alt="IMG-LOGO">
+          <img th:src="@{/images/icons/logo.png}" alt="IMG-LOGO">
         </a>
 
         <!-- Menu desktop -->
         <div class="menu-desktop">
           <ul class="main-menu">
-            <li class=>
+            <li>
               <a th:href="@{'/'}">Home</a>
 
             </li>
-
-            <li sec:authorize="hasAuthority('ADMIN')">
-              <a th:href="@{'/dashboard'}">Admin Dashboard</a>
+            <li sec:authorize="hasRole('ROLE_ANONYMOUS')">
+              <a th:href="@{'/login'}">Sign in</a>
             </li>
 
-            <li sec:authorize="hasAuthority('ADMIN')" class="active-menu">
-              <a th:href="@{'/user-list'}">Users</a>
+            <li  sec:authorize="hasRole('ROLE_ANONYMOUS')">
+              <a th:href="@{'/register'}">Sign up</a>
             </li>
+
             <li sec:authorize="hasAuthority('ADMIN')">
-              <a th:href="@{'/product-list'}">Products</a>
+              <a th:href="@{'/dashboard'}">Admin's Panel</a>
             </li>
-            <li sec:authorize="hasAuthority('ADMIN')" >
-              <a th:href="@{'/order-list'}">Orders</a>
+
+            <li class="active-menu"  sec:authorize="isAuthenticated()">
+              <a th:href="@{'/shopping-cart'}">Cart</a>
+            </li>
+            <li>
+              <a th:href="@{'/catalog'}">Catalog</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+              <a th:href="@{/logout}">Log Out</a>
             </li>
           </ul>
         </div>
@@ -94,68 +97,38 @@
   </div>
 </header>
 
+
+
+<!-- Content page -->
 <section class="bg0 p-t-62 p-b-60">
   <div class="container">
     <div class="row">
       <div class="col-md-8 col-lg-9 p-b-80">
         <div class="p-r-45 p-r-0-lg">
           <h3 class="mtext-111 cl2 p-b-16">
-            User List
+            Product List
           </h3>
 
-      <table id="products">
+              <table id="products">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
 
-      <thead>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Address</th>
-        <th>Role</th>
-        <th>Edit</th>
-        <th>Delete</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="user : ${usersAdm}">
-        <td th:text="${user.firstName}"></td>
-        <td th:text="${user.lastName}"></td>
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.address}"></td>
-        <td th:text="${user.role}"></td>
-        <td><a th:href="@{/edit-user/{id}(id=${user.id})}">Edit</a></td>
-        <td><a th:href="@{/delete-user/{id}(id=${user.id})}">Delete</a></td>
-      </tr>
-      </tbody>
-    </table>
-
-  <p><a href="/add-user">Add a User</a></p>
-
-
-        <div id="pagination">
-          <table>
-          <nav th:if="${usersAdm.totalPages gt 0}"></nav>
-          <td>
-            <d th:classappend="${usersAdm.number eq 0} ? 'disabled' ">
-              <a th:href="@{/user-list?page={id}(id=${usersAdm.number lt 2 ? 1 : usersAdm.number})}" class="flex-c-m how-pagination1 trans-04 m-all-7" >
-                <span>&laquo;</span>
-              </a>
-            </td>
-
-            <td th:classappend="${i eq usersAdm.number + 1} ? 'active' "
-                th:each="i:${#numbers.sequence(1,usersAdm.totalPages,1)}">
-              <a th:href="@{/user-list?page={id}(id=${i})}" th:text="${i}"  th:title="${'Page '+ i}" class="flex-c-m how-pagination1 trans-04 m-all-7 active-pagination1">
-              </a>
-            </td>
-
-            <td th:classappend="${usersAdm.number + 1 eq usersAdm.totalPages} ? 'disabled'">
-              <a th:href="@{/user-list?page={id}(id=${usersAdm.number + 2})}" class="flex-c-m how-pagination1 trans-04 m-all-7">
-                <span>&raquo;</span>
-              </a>
-            </td>
-
-          </table>
-        </div>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cart : ${cartProduct}">
+                  <td th:text="${cart.name}"></td>
+                  <td th:text="${cart.price}"></td>
+                  <td th:text="${cart.quantity}"></td>
+                </tr>
+                </tbody>
+              </table>
+          <form th:action="@{/order}"  method="POST">
+            <p><button type="submit">Place Order</button></p>
+          </form>
         </div>
       </div>
     </div>
@@ -165,20 +138,7 @@
 
 
 
-<!-- Footer -->
-<footer class="bg3 p-t-75 p-b-32">
-  <div class="container">
-    <div class="row">
 
-      <p class="stext-107 cl6 txt-center">
-        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-
-      </p>
-    </div>
-  </div>
-</footer>
 
 
 <!-- Back to top -->
